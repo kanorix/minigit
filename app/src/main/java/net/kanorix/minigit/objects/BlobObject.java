@@ -1,4 +1,4 @@
-package objects;
+package net.kanorix.minigit.objects;
 
 public class BlobObject extends GitObject {
 

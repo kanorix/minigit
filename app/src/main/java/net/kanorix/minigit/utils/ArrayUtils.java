@@ -1,4 +1,4 @@
-package utils;
+package net.kanorix.minigit.utils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package objects;
+package net.kanorix.minigit.objects;
 
 import java.util.List;
 
@@ -6,7 +6,8 @@ public class TreeObject extends GitObject {
 
     private List<Entry> entries;
 
-    public record Entry(int mode, String hash, String name) {}
+    public record Entry(int mode, String hash, String name) {
+    }
 
     public TreeObject(byte[] body) {
         super(body);

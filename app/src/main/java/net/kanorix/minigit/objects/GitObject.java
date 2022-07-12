@@ -1,10 +1,10 @@
-package objects;
+package net.kanorix.minigit.objects;
 
 import java.nio.charset.StandardCharsets;
 import java.rmi.UnexpectedException;
 
-import utils.ArrayUtils;
-import utils.Sha1;
+import net.kanorix.minigit.utils.ArrayUtils;
+import net.kanorix.minigit.utils.Sha1;
 
 public abstract class GitObject {
 
@@ -13,7 +13,6 @@ public abstract class GitObject {
     public GitObject(byte[] body) {
         this.body = body;
     }
-
 
     public static GitObject from(byte[] input) throws UnexpectedException {
         final int index = ArrayUtils.findIndex(input, (byte) 0).orElseThrow();
@@ -51,12 +50,12 @@ public abstract class GitObject {
 
     public String toString() {
         final var format = """
-            ---
-            hash: %s
-            type: %s
-            size: %d
-            ---
-            %s""";
+                ---
+                hash: %s
+                type: %s
+                size: %d
+                ---
+                %s""";
         return String.format(
                 format,
                 getHash(),

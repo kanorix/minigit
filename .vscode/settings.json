@@ -1,7 +1,17 @@
 {
-    "java.project.sourcePaths": ["src"],
+    "java.project.sourcePaths": [
+        "src"
+    ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.exclude": {
+        ".gradle": true,
+        "gradle": true,
+        "gradlew": true,
+        "gradlew.bat": true,
+        "app/bin/**": true,
+    }
 }
