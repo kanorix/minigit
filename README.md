@@ -1,18 +1,38 @@
-## Getting Started
+# MiniGit
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## 何これ
 
-## Folder Structure
+Gitのコマンドを一部実装したもの
 
-The workspace contains two folders by default, where:
+- Gitの動作を理解するため
+- GitのコマンドをJavaで実装してみたかった
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## コマンド一覧
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+### 配管コマンド
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+- [x] `minigit hash-object`
+- [ ] `minigit cat-file`
+- [ ] `minigit commit-tree`
+- [ ] `minigit update-index`
+- [ ] `minigit write-tree`
+- [ ] `minigit symbolic-ref`
 
-## Dependency Management
+### 磁器コマンド
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- [ ] `minigit add`
+- [ ] `minigit commit`
+- [ ] `minigit branch`
+
+## 参考
+
+- https://git-scm.com/book/ja/v2
+- https://koseki.hatenablog.com/entry/2014/04/22/inside-git-1
+- http://keijinsonyaban.blogspot.com/2011/05/git.html?m=1
+
+## Cloneした後どうすればいい？
+
+1. VScodeに拡張機能`ms-vscode-remote.remote-containers`を入れる
+1. `Dev Container`を立ち上げる
+1. `Tasks: Run build task`を実行
+1. ターミナルで`minigit`を実行
