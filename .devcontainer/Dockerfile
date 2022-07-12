@@ -15,6 +15,6 @@ RUN groupadd -g $GID $NAME && \
         echo "$NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER $NAME
 
-RUN alias minigit="java -jar /workspaces/minigit/app/build/libs/app-all.jar"
+RUN echo 'alias minigit="java -jar /workspaces/minigit/app/build/libs/app-all.jar"' >> ~/.bashrc
 
 CMD ["/bin/bash"]
