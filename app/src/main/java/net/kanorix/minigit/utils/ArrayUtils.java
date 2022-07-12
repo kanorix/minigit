@@ -6,13 +6,6 @@ import java.util.Optional;
 
 public class ArrayUtils {
 
-    public static byte[] concat(byte[] b1, byte[] b2) {
-        final byte[] joined = new byte[b1.length + b2.length];
-        System.arraycopy(b1, 0, joined, 0, b1.length);
-        System.arraycopy(b2, 0, joined, b1.length, b2.length);
-        return joined;
-    }
-
     public static Optional<Integer> findIndex(byte[] bytes, byte query) {
         for (int i = 0; i < bytes.length; i++) {
             if (bytes[i] == query) {

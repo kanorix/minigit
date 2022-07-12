@@ -1,16 +1,17 @@
 package net.kanorix.minigit.commands;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import net.kanorix.minigit.objects.BlobObject;
-import net.kanorix.minigit.utils.FileUtils;
+import net.kanorix.minigit.objects.GitObject;
+import net.kanorix.minigit.utils.ByteArrayUtil;
+import net.kanorix.minigit.utils.GitRepositoryUtil;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
-import picocli.CommandLine.Model.CommandSpec;
 
 @Command(name = "hash-object", helpCommand = true)
 public class HashObject implements Callable<Integer> {
@@ -31,10 +32,15 @@ public class HashObject implements Callable<Integer> {
     public Integer call() throws Exception {
         if (stdin || path != null) {
             final byte[] content = stdin
-                    ? FileUtils.read(System.in)
-                    : Files.readAllBytes(path);
+                    ? ByteArrayUtil.toByteArray(System.in)
+                    : ByteArrayUtil.toByteArray(path);
 
-            System.out.println(new BlobObject(content).getHash());
+            final GitObject object = new BlobObject(content);
+            System.out.println(ByteArrayUtil.getHash(object.getBytes()));
+
+            if (write) {
+                GitRepositoryUtil.save(object);
+            }
         }
         return 0;
     }

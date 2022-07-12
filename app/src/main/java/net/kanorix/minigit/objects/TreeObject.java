@@ -20,7 +20,7 @@ public class TreeObject extends GitObject {
     }
 
     @Override
-    String getType() {
+    public String getType() {
         return "tree";
     }
 }

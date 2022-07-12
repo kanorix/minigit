@@ -27,7 +27,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'minigit.App'
+    mainClass = 'net.kanorix.minigit.App'
 }
 
 tasks.named('test') {

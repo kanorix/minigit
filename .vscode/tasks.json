@@ -2,6 +2,15 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "auto rebuild",
+			"type": "shell",
+			"command": "./gradlew -t build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+		},
+		{
 			"label": "build",
 			"type": "shell",
 			"command": "./gradlew build"
@@ -10,11 +19,6 @@
 			"label": "clean",
 			"type": "shell",
 			"command": "./gradlew clean"
-		},
-		{
-			"label": "check",
-			"type": "shell",
-			"command": "./gradlew check"
 		}
 	]
 }

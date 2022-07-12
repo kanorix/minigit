@@ -20,6 +20,7 @@ Gitのコマンドを一部実装したもの
 
 ### 磁器コマンド
 
+- [x] `minigit init`
 - [ ] `minigit add`
 - [ ] `minigit commit`
 - [ ] `minigit branch`
