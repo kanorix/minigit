@@ -10,7 +10,9 @@ import picocli.CommandLine.Command;
 public class App {
 
     public static void main(String[] args) {
-        final int exitCode = new CommandLine(new App()).execute(args);
+        final int exitCode = new CommandLine(new App())
+                .setExecutionExceptionHandler(new ExceptionHandler())
+                .execute(args);
         System.exit(exitCode);
     }
 }

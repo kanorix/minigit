@@ -1,20 +1,16 @@
 package net.kanorix.minigit.commands;
 
-import net.kanorix.minigit.MiniGitException;
+import java.util.concurrent.Callable;
+
 import net.kanorix.minigit.objects.GitObject;
 import net.kanorix.minigit.utils.ByteArrayUtil;
 import net.kanorix.minigit.utils.GitRepositoryUtil;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-import picocli.CommandLine.Spec;
 
 @Command(name = "cat-file")
-public class CatFile implements Runnable {
-
-    @Spec
-    private CommandSpec spec;
+public class CatFile implements Callable<Integer> {
 
     @Option(names = "--help", usageHelp = true, description = "display this help and exit")
     private boolean help;
@@ -32,28 +28,22 @@ public class CatFile implements Runnable {
     private String object;
 
     @Override
-    public void run() {
-        try {
-            final GitObject gitObject = GitRepositoryUtil.find(object);
+    public Integer call() throws Exception {
+        final GitObject gitObject = GitRepositoryUtil.find(object);
 
-            if (type) {
-                System.out.println(gitObject.getType());
-                return;
-            }
-            if (size) {
-                System.out.println(gitObject.getSize());
-                return;
-            }
-            if (pretty) {
-                System.out.println(ByteArrayUtil.toString(gitObject.getBody()));
-                return;
-            }
-            System.out.println(gitObject.toString());
-            return;
-
-        } catch (MiniGitException e) {
-            e.print();
-            return;
+        if (type) {
+            System.out.println(gitObject.getType());
+            return 0;
         }
+        if (size) {
+            System.out.println(gitObject.getSize());
+            return 0;
+        }
+        if (pretty) {
+            System.out.println(ByteArrayUtil.toString(gitObject.getBody()));
+            return 0;
+        }
+        System.out.println(gitObject.toString());
+        return 0;
     }
 }
