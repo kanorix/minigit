@@ -9,13 +9,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class ByteArrayUtil {
 
-    public static byte[] toByteArray(InputStream is) throws IOException {
+    public static byte[] readAllBytes(InputStream is) throws IOException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         int count;
         byte[] data = new byte[1024];
@@ -27,19 +30,28 @@ public class ByteArrayUtil {
         return buffer.toByteArray();
     }
 
-    public static byte[] toByteArray(final Path path) throws IOException {
+    public static byte[] readAllBytes(final Path path) throws IOException {
         return Files.readAllBytes(path);
+    }
+
+    public static byte[] toByteArray(final List<Byte> input) {
+        final int length = input.size();
+        final byte[] output = new byte[length];
+        for (int i = 0; i < length; i++) {
+            output[i] = input.get(i);
+        }
+        return output;
+    }
+
+    public static byte[] slice(final byte[] input, final int first, final int end) {
+        final int length = end - first;
+        final byte[] sliced = new byte[length];
+        System.arraycopy(input, first, sliced, 0, length);
+        return sliced;
     }
 
     public static String toString(final byte[] input) {
         return new String(input, StandardCharsets.UTF_8);
-    }
-
-    public static void display(final byte[] input) {
-        for (byte b : input) {
-            System.out.print(b + " ");
-        }
-        System.out.println();
     }
 
     public static byte[] concat(byte[] b1, byte[] b2) {
@@ -47,6 +59,40 @@ public class ByteArrayUtil {
         System.arraycopy(b1, 0, joined, 0, b1.length);
         System.arraycopy(b2, 0, joined, b1.length, b2.length);
         return joined;
+    }
+
+    public static List<byte[]> split(final byte[] input, Predicate<Byte> pred) {
+        final List<byte[]> output = new ArrayList<>();
+        final int length = input.length;
+        int index = 0;
+        while (index <= length) {
+            final List<Byte> result = new ArrayList<>();
+            while (index < length && !pred.test(input[index])) {
+                result.add(input[index++]);
+            }
+            output.add(toByteArray(result));
+            index++;
+        }
+        return output;
+    }
+
+    public static List<byte[]> splitn(final byte[] input, int size, Predicate<Byte> pred) {
+        final List<byte[]> output = new ArrayList<>();
+        final int length = input.length;
+        int index = 0;
+        while (index <= length) {
+            final List<Byte> result = new ArrayList<>();
+            while (index < length && !pred.test(input[index])) {
+                result.add(input[index++]);
+            }
+            output.add(toByteArray(result));
+            if (output.size() + 1 == size) {
+                output.add(slice(input, index + 1, length));
+                break;
+            }
+            index++;
+        }
+        return output;
     }
 
     public static String getHash(final byte[] input) {

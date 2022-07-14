@@ -36,8 +36,8 @@ public class HashObject implements Callable<Integer> {
     @Override
     public Integer call() throws IOException {
         final byte[] content = input.stdin
-                ? ByteArrayUtil.toByteArray(System.in)
-                : ByteArrayUtil.toByteArray(input.file);
+                ? ByteArrayUtil.readAllBytes(System.in)
+                : ByteArrayUtil.readAllBytes(input.file);
 
         final GitObject object = new BlobObject(content);
         System.out.println(ByteArrayUtil.getHash(object.getBytes()));

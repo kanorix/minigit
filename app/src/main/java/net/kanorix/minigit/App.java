@@ -6,7 +6,8 @@ import net.kanorix.minigit.commands.Init;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name = "minigit", version = "1.0", subcommands = { Init.class, HashObject.class, CatFile.class })
+@Command(name = "minigit", version = "1.0",
+        subcommands = {Init.class, HashObject.class, CatFile.class})
 public class App {
 
     public static void main(String[] args) {

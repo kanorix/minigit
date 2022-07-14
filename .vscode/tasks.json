@@ -18,7 +18,7 @@
 		{
 			"label": "clean",
 			"type": "shell",
-			"command": "./gradlew clean"
+			"command": "./gradlew --refresh-dependencies clean"
 		}
 	]
 }
