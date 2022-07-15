@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.DataFormatException;
@@ -118,8 +119,39 @@ public class ByteArrayUtil {
         }
     }
 
+    /**
+     * バイト配列から文字列に変換します。
+     *
+     * { 0x01, 0x3A, 0x20, 0x45 } => "013A2045"
+     *
+     * @param input バイト列
+     * @return 16進数文字列
+     */
     public static String toHexString(final byte[] input) {
         return String.format("%040x", new BigInteger(1, input));
+    }
+
+    /**
+     * 文字列を16進数の配列に変換します。
+     *
+     * "013A2045" => { 0x01, 0x3A, 0x20, 0x45 }
+     *
+     * @param input 16進数文字列
+     * @return バイト列
+     */
+    public static byte[] toHexBytes(final String input) {
+        return HexFormat.of().parseHex(input);
+    }
+
+    public static void display(final byte[] input) {
+        for (int i = 0; i < input.length; i++) {
+            System.out.print("%2d ".formatted(i));
+        }
+        System.out.println();
+        for (byte b : input) {
+            System.out.print("%2x ".formatted(b));
+        }
+        System.out.println();
     }
 
     public static byte[] compress(final byte[] input) throws IOException {
