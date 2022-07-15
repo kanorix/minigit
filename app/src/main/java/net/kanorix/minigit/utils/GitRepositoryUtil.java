@@ -1,17 +1,12 @@
 package net.kanorix.minigit.utils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.rmi.UnexpectedException;
-import java.util.List;
 import java.util.zip.DataFormatException;
 
-import net.kanorix.minigit.objects.BlobObject;
 import net.kanorix.minigit.objects.GitObject;
-import net.kanorix.minigit.objects.TreeObject;
 
 public class GitRepositoryUtil {
 
@@ -26,9 +21,15 @@ public class GitRepositoryUtil {
         Files.createDirectories(HEADS_DIR);
     }
 
+    /**
+     * Gitオブジェクトを保存します。
+     *
+     * @param gitObject Gitオブジェクト
+     * @throws IOException IO例外
+     */
     public static void save(GitObject gitObject) throws IOException {
-        final byte[] bytes = gitObject.getBytes();
-        final String hash = ByteArrayUtil.getHash(bytes);
+        final byte[] bytes = gitObject.toBytes();
+        final String hash = ByteArrayUtil.hashOf(bytes);
 
         final var dir = OBJECTS_DIR.resolve(hash.substring(0, 2));
         final var name = dir.resolve(hash.substring(2, hash.length()));
@@ -40,6 +41,14 @@ public class GitRepositoryUtil {
         }
     }
 
+    /**
+     * Gitオブジェクトを探します。
+     *
+     * @param hash ハッシュ値
+     * @return Gitオブジェクト
+     * @throws IOException IO例外
+     * @throws DataFormatException データ形式例外
+     */
     public static GitObject find(String hash) throws IOException, DataFormatException {
         final var dir = hash.substring(0, 2);
         final var name = hash.substring(2, hash.length());
@@ -49,40 +58,10 @@ public class GitRepositoryUtil {
                 .filter(fp -> name.isEmpty() || fp.toFile().getName().startsWith(name))
                 .toList();
 
-        final var path = files.size() == 1 ? files.get(0) : targetDir.resolve(name);
+        final var path = files.size() == 1
+                ? files.get(0)
+                : targetDir.resolve(name);
         final var bytes = ByteArrayUtil.decompress(ByteArrayUtil.readAllBytes(path));
-        return from(bytes);
-    }
-
-    /**
-     *
-     * バイト配列からGitオブジェクトを生成します。
-     *
-     * @param input バイト配列
-     * @return Gitオブジェクト
-     * @throws UnexpectedException 予期しないオブジェクトタイプ
-     */
-    public static GitObject from(byte[] input) throws UnexpectedException {
-        // '\0'の場所で半分にする
-        final List<byte[]> bytesList = ByteArrayUtil.splitn(input, 2, (b) -> b == 0);
-
-        // '\0'の前半がヘッダー
-        final String header = new String(bytesList.get(0), StandardCharsets.UTF_8);
-
-        // '\0'の前半が内容
-        final byte[] content = bytesList.get(1);
-
-        // ヘッダーの空白よりにあるタイプを取得
-        final String type = header.split(" ")[0];
-
-        // タイプによってオブジェクトを生成する
-        switch (type) {
-            case "blob":
-                return new BlobObject(content);
-            case "tree":
-                return new TreeObject(content);
-            default:
-                throw new UnexpectedException("Unknown git object type.");
-        }
+        return GitObject.from(bytes);
     }
 }

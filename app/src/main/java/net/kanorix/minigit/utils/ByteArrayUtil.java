@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.DataFormatException;
@@ -43,10 +44,10 @@ public class ByteArrayUtil {
         return output;
     }
 
-    public static byte[] slice(final byte[] input, final int first, final int end) {
-        final int length = end - first;
+    public static byte[] slice(final byte[] input, final int begin, final int end) {
+        final int length = end - begin;
         final byte[] sliced = new byte[length];
-        System.arraycopy(input, first, sliced, 0, length);
+        System.arraycopy(input, begin, sliced, 0, length);
         return sliced;
     }
 
@@ -61,7 +62,7 @@ public class ByteArrayUtil {
         return joined;
     }
 
-    public static List<byte[]> split(final byte[] input, Predicate<Byte> pred) {
+    public static List<byte[]> split(final byte[] input, final Predicate<Byte> pred) {
         final List<byte[]> output = new ArrayList<>();
         final int length = input.length;
         int index = 0;
@@ -76,7 +77,11 @@ public class ByteArrayUtil {
         return output;
     }
 
-    public static List<byte[]> splitn(final byte[] input, int size, Predicate<Byte> pred) {
+    public static List<byte[]> splitn(
+            final byte[] input,
+            final int size,
+            final Predicate<Byte> pred) {
+
         final List<byte[]> output = new ArrayList<>();
         final int length = input.length;
         int index = 0;
@@ -95,14 +100,26 @@ public class ByteArrayUtil {
         return output;
     }
 
-    public static String getHash(final byte[] input) {
+    public static byte[] subArray(final byte[] input, int begin, int end) {
+        return Arrays.copyOfRange(input, begin, end);
+    }
+
+    public static String subString(final byte[] input, int begin, int end) {
+        return toString(subArray(input, begin, end));
+    }
+
+    public static String hashOf(final byte[] input) {
         try {
             final MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
-            return String.format("%040x", new BigInteger(1, sha1.digest(input)));
+            return toHexString(sha1.digest(input));
         } catch (NoSuchAlgorithmException e) {
             // SHA-1は必ずあるため、例外は発生しない
             return "";
         }
+    }
+
+    public static String toHexString(final byte[] input) {
+        return String.format("%040x", new BigInteger(1, input));
     }
 
     public static byte[] compress(final byte[] input) throws IOException {

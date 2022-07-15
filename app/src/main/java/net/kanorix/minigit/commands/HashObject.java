@@ -40,7 +40,7 @@ public class HashObject implements Callable<Integer> {
                 : ByteArrayUtil.readAllBytes(input.file);
 
         final GitObject object = new BlobObject(content);
-        System.out.println(ByteArrayUtil.getHash(object.getBytes()));
+        System.out.println(ByteArrayUtil.hashOf(object.toBytes()));
 
         if (write) {
             GitRepositoryUtil.save(object);

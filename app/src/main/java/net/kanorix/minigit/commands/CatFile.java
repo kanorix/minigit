@@ -3,7 +3,6 @@ package net.kanorix.minigit.commands;
 import java.util.concurrent.Callable;
 
 import net.kanorix.minigit.objects.GitObject;
-import net.kanorix.minigit.utils.ByteArrayUtil;
 import net.kanorix.minigit.utils.GitRepositoryUtil;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -36,14 +35,14 @@ public class CatFile implements Callable<Integer> {
             return 0;
         }
         if (size) {
-            System.out.println(gitObject.getSize());
+            System.out.println(gitObject.toBytes().length);
             return 0;
         }
         if (pretty) {
-            System.out.println(ByteArrayUtil.toString(gitObject.getBody()));
+            System.out.println(gitObject);
             return 0;
         }
-        System.out.println(gitObject.toString());
+        System.out.println(gitObject.inspect());
         return 0;
     }
 }
