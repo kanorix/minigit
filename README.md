@@ -12,7 +12,7 @@ Gitのコマンドを一部実装したもの
 ### 配管コマンド
 
 - [x] `minigit hash-object`
-- [ ] `minigit cat-file`
+- [x] `minigit cat-file`
 - [ ] `minigit commit-tree`
 - [ ] `minigit update-index`
 - [ ] `minigit write-tree`
